@@ -1,0 +1,13 @@
+<section class="card" style="padding:16px; border:1px solid #e5e7eb; border-radius:14px; background:#fff;">
+  <h2 style="margin:0 0 8px;">Кеширование в Service Worker</h2>
+  <p style="margin:0; color:#374151;">
+    В практике 15 вы доводите стратегию кеширования до «рабочей»:
+    оболочка и статика доступны офлайн, а контент кешируется и обновляется.
+  </p>
+  <ul style="margin:10px 0 0; padding-left:18px; color:#374151;">
+    <li><b>Precache</b> (install): кладём в кеш shell‑ресурсы (HTML/CSS/JS/иконки).</li>
+    <li><b>Activate</b>: чистим старые кеши.</li>
+    <li><b>Fetch</b>: для контента можно сделать Network First (если сеть есть — обновить, иначе взять из кеша).</li>
+  </ul>
+  <p style="margin:10px 0 0; color:#6b7280;">Смотри TODO в <code>sw.js</code>.</p>
+</section>

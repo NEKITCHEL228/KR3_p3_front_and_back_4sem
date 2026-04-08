@@ -1,0 +1,9 @@
+<section class="card" style="padding:16px; border:1px solid #e5e7eb; border-radius:14px; background:#fff;">
+  <h2 style="margin:0 0 8px;">Практика 15: HTTPS + App Shell</h2>
+  <ul style="margin:0; padding-left:18px; color:#374151;">
+    <li>Открываем приложение по <b>https://localhost:3443</b> (иначе Service Worker/Push не считаются «secure context»).</li>
+    <li><b>App Shell</b>: оболочка (index.html) + контент в папке <code>content/</code>.</li>
+    <li>Service Worker кеширует оболочку и статику, а контент подгружается отдельно и тоже кешируется.</li>
+  </ul>
+  <p style="margin:10px 0 0; color:#6b7280;">Подсказка: страницы ниже переключаются без перезагрузки — контент подгружается fetch‑ом из <code>content/*.html</code>.</p>
+</section>

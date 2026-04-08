@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0b1220" />
+
+  <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <title>ПР17 — Отложенные push‑уведомления</title>
+</head>
+<body>
+  <div class="container" style="max-width: 980px; margin: 0 auto; padding: 24px;">
+    <h1 style="margin-top:0;">Практика 17 — Отложенные Push‑уведомления</h1>
+    <p style="color:#555; margin-top:8px;">
+      Этот интерфейс — демо‑панель. Клиент — обычный <code>index.html</code> + <code>app.js</code>.
+      Всё работает через HTTPS сервер (<code>server/src/server.js</code>), который раздаёт эту статику и API.
+    </p>
+
+    <section class="card" style="margin-top: 16px; padding: 16px; border: 1px solid #ddd; border-radius: 12px;">
+      <h2 style="margin-top:0;">1) Базовая проверка</h2>
+      <button id="btn-health" class="button button--secondary" type="button">Проверить /api/health</button>
+    </section>
+
+    <section class="card" style="margin-top: 16px; padding: 16px; border: 1px solid #ddd; border-radius: 12px;">
+      <h2 style="margin-top:0;">2) Push (VAPID)</h2>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button id="btn-subscribe" class="button button--primary" type="button">Разрешить и подписаться на Push</button>
+        <button id="btn-push-test" class="button button--secondary" type="button">Отправить тестовый Push</button>
+      </div>
+      <p style="color:#555; margin-top:10px;">
+        Подписка создаётся в браузере и отправляется на сервер (<code>POST /api/push/subscribe</code>).
+      </p>
+    </section>
+
+    <section class="card" style="margin-top: 16px; padding: 16px; border: 1px solid #ddd; border-radius: 12px;">
+      <h2 style="margin-top:0;">3) Напоминание (отложенная отправка)</h2>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label for="rem-title" style="font-size: 14px; color:#333;">Текст</label>
+          <input id="rem-title" class="input" type="text" placeholder="Например: Сдать практику" style="min-width: 260px; padding: 10px;" />
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label for="rem-delay" style="font-size: 14px; color:#333;">Задержка (сек)</label>
+          <input id="rem-delay" class="input" type="number" value="30" min="1" style="width: 140px; padding: 10px;" />
+        </div>
+        <button id="btn-schedule" class="button button--primary" type="button">Запланировать</button>
+      </div>
+
+      <p style="color:#555; margin-top:10px;">
+        Сервер ставит таймер и отправляет push позже: <code>POST /api/reminders/schedule</code>.
+      </p>
+
+      <p style="color:#555; margin-top:10px;">
+        TODO (студентам): добавить action «Отложить на 5 минут» и обработать его в <code>sw.js</code>.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top: 16px; padding: 16px; border: 1px solid #ddd; border-radius: 12px;">
+      <h2 style="margin-top:0;">Лог</h2>
+      <pre id="log" style="white-space: pre-wrap; margin:0; background:#0b1220; color:#d7e2ff; padding:12px; border-radius:10px; min-height:120px;"></pre>
+    </section>
+
+    <p style="margin-top: 16px; color:#555;">
+      Задание студентам: <code>docs/student-handout.md</code>.
+    </p>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
