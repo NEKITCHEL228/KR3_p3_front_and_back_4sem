@@ -116,8 +116,12 @@ app.post('/api/push/test', async (req, res) => {
       await sendNotification(subscription, payload);
       sent++;
     } catch (e) {
-      // TODO (студентам): при 410/404 удалять подписку
-      console.warn('[PUSH] send failed:', e.statusCode || '', e.body || e.message);
+      if (e.statusCode === 410 || e.statusCode === 404) {
+        console.log('[PUSH] Подписка недействительна (пользователь отписался). Удаляем...');
+        subscriptions.delete(raw);
+      } else {
+        console.warn('[PUSH] Неизвестная ошибка отправки:', e.statusCode || '', e.message);
+      }
     }
   }
 
@@ -202,10 +206,12 @@ function scheduleReminderTimer(reminder) {
         await sendNotification(subscription, payload);
         sent++;
       } catch (e) {
-        // Здесь часто бывает "subscription умерла" (410/404).
-        // В учебной версии мы просто логируем.
-        // TODO (студентам): при 410 удалять подписку из subscriptions.
-        console.warn('[PUSH] send failed:', e.statusCode || '', e.body || e.message);
+        if (e.statusCode === 410 || e.statusCode === 404) {
+          console.log('[PUSH] Подписка недействительна (пользователь отписался). Удаляем...');
+          subscriptions.delete(raw);
+        } else {
+          console.warn('[PUSH] Неизвестная ошибка отправки:', e.statusCode || '', e.message);
+        }
       }
     }
 
@@ -315,6 +321,10 @@ app.post('/api/reminders/snooze', (req, res) => {
  * TODO (студентам): добавить эндпоинт списка напоминаний
  * GET /api/reminders
  */
+app.get("/api/reminders", (req, res) => {
+  const list = Array.from(reminders.values());
+  return res.json({ ok: true, reminders: list });
+});
 
 // ----------------------------
 // HTTPS + Socket.IO (optional)

@@ -37,11 +37,14 @@ const API = {
   // Сервер создаёт напоминание и ставит таймер (setTimeout).
   // Когда таймер сработает — сервер отправит push всем подписчикам.
   scheduleReminder: (payload) =>
-  fetch('/api/reminders/schedule', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  }).then((r) => r.json()),
+    fetch('/api/reminders/schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).then((r) => r.json()),
+  // Получает список напоминаний с сервера (GET /api/reminders)
+  getReminders: () =>
+    fetch('/api/reminders').then((r) => r.json()),
 };
 
 // --------------------------------------------------
@@ -171,11 +174,33 @@ async function scheduleReminder() {
     log(`Push test sent=${res.sent} total=${res.total}`);
   });
 
+  // Кнопка для планирования напоминания
   $('#btn-schedule').addEventListener('click', async () => {
     try {
       await scheduleReminder();
     } catch (e) {
       log(`Schedule error: ${e.message}`);
+    }
+  });
+
+  // Лист с напоминаниями
+  $('#btn-list').addEventListener('click', async () => {
+    try {
+      const res = await API.getReminders();
+      if (res.error) {
+        log(`List error: ${res.message || res.error}`);
+        return;
+      }
+      const list = res.reminders;
+      const el = $('#reminders-list');
+      el.innerHTML = '';
+      list.forEach((reminder) => {
+        const li = document.createElement('li');
+        li.textContent = `${reminder.title} (${new Date(reminder.fireAt).toLocaleString()})`;
+        el.appendChild(li);
+      });
+    } catch (e) {
+      log(`List error: ${e.message}`);
     }
   });
 })();
